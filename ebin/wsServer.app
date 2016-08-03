@@ -1,9 +1,0 @@
-{application,wsServer,
-             [{description,"wsServer"},
-              {vsn,"1.0.0"},
-              {modules,[toppage_handler,wsServer,wsServer_app,wsServer_sup,
-                        wsServer_web,ws_handler]},
-              {registered,[]},
-              {mod,{wsServer_app,[]}},
-              {env,[]},
-              {applications,[kernel,stdlib,crypto,cowboy]}]}.
