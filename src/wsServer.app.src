@@ -1,0 +1,9 @@
+%% -*- erlang -*-
+{application, wsServer,
+ [{description, "wsServer"},
+  {vsn, "1.0.0"},  
+  {modules, []},
+  {registered, []},
+  {mod, {'wsServer_app', []}},
+  {env, []},
+  {applications, [kernel, stdlib, crypto, cowboy]}]}.
