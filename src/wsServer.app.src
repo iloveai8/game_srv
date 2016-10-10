@@ -6,4 +6,4 @@
   {registered, []},
   {mod, {'wsServer_app', []}},
   {env, []},
-  {applications, [kernel, stdlib, crypto, cowboy]}]}.
+  {applications, [kernel, stdlib]}]}.

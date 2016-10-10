@@ -37,7 +37,7 @@ start_http() ->
                 {"/websocket", ws_handler, []},
                 {"/:name", toppage_handler, []}]}
     ]),
-    cowboy:start_http(http, 100, [{port, 8080}], [{env, [{dispatch, Dispatch}]}]).
+    cowboy:start_http(http, 100, [{port, 8081}], [{env, [{dispatch, Dispatch}]}]).
 
 start_https() ->
     StaticDir = get_path("priv"),
@@ -50,7 +50,7 @@ start_https() ->
                 {"/toppage_handler", toppage_handler, []}
         ]}
     ]),
-    cowboy:start_https(https, 100, [{port, 8081},
+    cowboy:start_https(https, 100, [{port, 8082},
                                     {cacertfile, CertDir ++ "/ca.crt"},
                                     {certfile, CertDir ++ "/server.crt"},
                                     {keyfile, CertDir ++ "/server.key"}], [{env, [{dispatch, Dispatch}]}]).    

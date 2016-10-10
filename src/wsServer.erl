@@ -23,7 +23,8 @@ start() ->
     ensure_started(cowlib),
     ensure_started(ranch),
     ensure_started(cowboy),
-    ensure_started(wsServer).
+    ensure_started(wsServer),
+    ensure_started(data_srv).
 
 
 %% @spec stop() -> ok
