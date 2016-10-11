@@ -1,9 +1,9 @@
 %% -*- erlang -*-
-{application, wsServer,
- [{description, "wsServer"},
+{application, game_srv,
+ [{description, "game_srv"},
   {vsn, "1.0.0"},  
   {modules, []},
   {registered, []},
-  {mod, {'wsServer_app', []}},
+  {mod, {'game_srv_app', []}},
   {env, []},
   {applications, [kernel, stdlib]}]}.

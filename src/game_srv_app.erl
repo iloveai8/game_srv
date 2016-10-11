@@ -1,19 +1,11 @@
-%% @author Mochi Media <dev@mochimedia.com>
-%% @copyright wsServer Mochi Media <dev@mochimedia.com>
-
-%% @doc Callbacks for the wsServer application.
-
--module(wsServer_app).
--author("Mochi Media <dev@mochimedia.com>").
+-module(game_srv_app).
 -behaviour(application).
-
 -compile(export_all).
-
 %% API.
 start(_Type, _Args) ->
     {ok, _} = start_http(),
     {ok, _} = start_https(),
-    wsServer_sup:start_link().
+    game_srv_sup:start_link().
 
 stop(_State) ->
     ok.

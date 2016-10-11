@@ -3,7 +3,7 @@
 
 %% @doc Web server for wsServer.
 
--module(wsServer_web).
+-module(game_srv_web).
 -author("Mochi Media <dev@mochimedia.com>").
 
 -export([start/1, stop/0, loop/2]).
