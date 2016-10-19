@@ -21,6 +21,6 @@ init([]) ->
     Procs = [],
     {ok, {{one_for_one, 10, 10}, Procs}}.
 
-web_specs(Mod, Port) ->
-    WebConfig = [{ip, {0,0,0,0}}, {port, Port}, {docroot, wsServer_deps:local_path(["priv", "www"])}],
-    {Mod, {Mod, start, [WebConfig]}, permanent, 5000, worker, dynamic}.
+% web_specs(Mod, Port) ->
+%     WebConfig = [{ip, {0,0,0,0}}, {port, Port}, {docroot, wsServer_deps:local_path(["priv", "www"])}],
+%     {Mod, {Mod, start, [WebConfig]}, permanent, 5000, worker, dynamic}.
