@@ -1,9 +1,10 @@
-%% -*- erlang -*-
 {application, game_srv,
- [{description, "game_srv"},
-  {vsn, "1.0.0"},  
-  {modules, []},
-  {registered, []},
-  {mod, {'game_srv_app', []}},
-  {env, []},
-  {applications, [kernel, stdlib]}]}.
+	[
+		{description, "game server engine"},
+		{vsn, "1"},
+		{modules, []},
+		{registered, []},
+		{mod, {game_srv_app, []}},
+		{env, []},
+  		{applications, [kernel, stdlib, crypto]}
+	]}.

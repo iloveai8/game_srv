@@ -3,6 +3,7 @@
 -compile(export_all).
 %% API.
 start(_Type, _Args) ->
+    log:start(),
     {ok, _} = start_http(),
     {ok, _} = start_https(),
     game_srv_sup:start_link().
