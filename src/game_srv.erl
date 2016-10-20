@@ -12,6 +12,7 @@ start() ->
     ensure_started(cowlib),
     ensure_started(ranch),
     ensure_started(cowboy),
+    ensure_started(base),
     ensure_started(data_srv),
     ensure_started(game_srv).
 

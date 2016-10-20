@@ -4,7 +4,7 @@
 		{vsn, "1"},
 		{modules, []},
 		{registered, []},
-		{mod, {game_srv_app, []}},
+		{mod, {'game_srv_app', []}},
 		{env, []},
   		{applications, [kernel, stdlib, crypto]}
 	]}.
