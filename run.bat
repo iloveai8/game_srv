@@ -1,1 +1,1 @@
-erl -pa ebin deps/mochiweb/ebin deps/cowlib/ebin deps/ranch/ebin deps/cowboy/ebin deps/data_srv/ebin -boot start_sasl -config elog -name game_srv_dev@127.0.0.1 +K true +P 102400 -s game_srv -s reloader
+erl -pa ebin deps/mochiweb/ebin deps/cowlib/ebin deps/ranch/ebin deps/cowboy/ebin deps/base/ebin deps/data_srv/ebin -boot start_sasl -config elog -name game_srv_dev@127.0.0.1 +K true +P 102400 -s game_srv -s reloader
