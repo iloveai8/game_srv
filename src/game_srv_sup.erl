@@ -1,7 +1,7 @@
 -module(game_srv_sup).
 -behaviour(supervisor).
 
--export([start_link/0, upgrade/0]).
+-export([start_link/0]).
 -export([init/1]).
 
 start_link() ->
