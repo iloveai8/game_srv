@@ -1,0 +1,19 @@
+#!/usr/bin/env escript
+%%! -noshell -noinput
+%% -*- mode: erlang;erlang-indent-level: 4;indent-tabs-mode: nil -*-
+%% ex: ft=erlang ts=4 sw=4 et
+%% This file is left for backward-compatibility.
+%% You, probably, shouldn't include it to new projects.
+-include_lib("kernel/include/file.hrl").
+
+main(_Args) ->
+    clean_proto().
+
+clean_proto()->
+    Files = filelib:wildcard("ebin/*.{erl,beam,app}"),
+    io:format("Files:~p~n", [Files]),
+    lists:foreach(fun(F)-> file:delete(F) end, Files),
+    Files1 = filelib:wildcard("include/*_pb.hrl"),
+    io:format("Files1:~p~n", [Files1]),
+    lists:foreach(fun(F)-> file:delete(F) end, Files1).
+

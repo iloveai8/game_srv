@@ -1,0 +1,34 @@
+#!/usr/bin/env escript
+%%! -noshell -noinput
+%% -*- mode: erlang;erlang-indent-level: 4;indent-tabs-mode: nil -*-
+%% ex: ft=erlang ts=4 sw=4 et
+%% This file is left for backward-compatibility.
+%% You, probably, shouldn't include it to new projects.
+
+
+main(_Args) ->
+   code:add_path("./ebin"),
+%%    code:add_path("../../../tools/gen_message/ebin"),
+%%    code:add_path("../../../tools/gen_message/deps/base/ebin"),
+%%    code:add_path("../../../tools/gen_message/deps/jsx/ebin"),
+%%    code:add_path("../../../tools/gen_message/deps/msgpack/ebin"),
+%%    application:ensure_all_started(base),
+%%    gen_proto().
+    gen_proto().
+
+
+
+
+gen_proto()->
+%%    ProtoWild = "./proto/*.proto",
+%%    Protos = filelib:wildcard(ProtoWild),
+%%    GenProto = fun(Proto)->
+%%                    BeamDir = "ebin",
+%%                    HrlDir = "include",
+%%                    Opts = [debug_info],
+%%                    gen_message:gen_erl(Proto,BeamDir,HrlDir,Opts)
+%%               end,
+%%    lists:foreach(GenProto,Protos).
+    Protos = filelib:wildcard("./proto/*.proto"),
+    io:format("Protos~p~n", [Protos]),
+    lists:foreach(fun(Proto) -> protobuffs_compile:scan_file(Proto) end, Protos).
