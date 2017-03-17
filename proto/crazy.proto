@@ -1,8 +1,1265 @@
-message Person {  
-  required int32 age = 1;  
-  required string name = 2;  
-}  
-  
-message Family {  
-  repeated Person person = 1;  
-}  
+//结构为key_value的泛型结构对.其中,当key为:
+// 0~ 999    value被解析为unsigned int8
+// 1000~1999 value被解析为int8
+// 2000~2999 value被解析为int16
+// 3000~3999 value被解析为int32
+// 4000~4999 value被解析为int64
+// 5000~5999 value被解析为string
+// 6000~6999 value被解析为bool list
+// 7000~7999 value被解析为int8 list
+// 8000~8999 value被解析为int16 list
+// 9000~9999 value被解析为int32 list
+// 10000~10999 value被解析为int64 list
+// 11000~11999 value被解析为string list
+message kvobject{
+    required uint16 key = 1;
+    required int32 value = 2;
+}
+
+message msg_header {
+    required uint16 msgid = 1;
+    enum MSG_ID {
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        ////        游戏消息:msg_后为消息结构名,=号右边为消息id.
+        ////        c2s为client->server      s2c为server->client
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        server_version_s2c                      = 2;
+
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////玩家登录部分                   ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        user_login_c2s                          = 4;
+        user_login_success_s2c                  = 5;
+        user_login_failed_s2c                   = 6;
+        user_auth_c2s                           = 7;
+        user_auth_success_s2c                   = 8;
+        user_auth_failed_s2c                    = 9;
+        ////////////////////////////////////////////////////////////////////////
+        ///////////////////服务器维护部分                   //////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        server_maintain_s2c                     = 15;
+
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////玩家账号绑定                   ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        platform_bind_c2s                       = 21;
+        platform_bind_success_s2c               = 22;
+        platform_bind_conflict_s2c              = 23;
+        platform_bind_failed_s2c                = 24;
+
+        platform_bind_use_archive_c2s           = 25;
+        platform_bind_use_archive_success_s2c   = 26;
+        platform_bind_use_archive_failed_s2c    = 27;
+
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////玩家大厅                   ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        user_enter_lobby_c2s                    = 28;
+        user_enter_lobby_success_s2c            = 29;
+        user_enter_lobby_failed_s2c             = 30;
+
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////玩家关卡                   ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        user_enter_theme_c2s                    = 31;
+        user_enter_theme_success_s2c            = 32;
+        user_enter_theme_failed_s2c             = 33;
+
+        user_theme_spin_c2s                     = 34;
+        user_theme_spin_success_s2c             = 35;
+        user_theme_spin_failed_s2c              = 36;
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////玩家小游戏                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        query_game_info_c2s                     = 46;
+        query_game_info_success_s2c             = 47;
+        query_game_info_failed_s2c              = 48;
+
+        play_game_c2s                           = 49;
+        play_game_failed_s2c                    = 50;
+        play_game_success_s2c                   = 51;
+
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////玩家商店内购                ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        query_store_c2s                         = 52;
+        query_store_success_s2c                 = 53;
+        query_store_failed_s2c                  = 54;
+
+        app_store_buy_c2s                       = 55;
+        app_store_buy_success_s2c               = 56;
+        app_store_buy_failed_s2c                = 57;
+
+        play_store_buy_c2s                      = 58;
+        play_store_buy_success_s2c              = 59;
+        play_store_buy_failed_s2c               = 60;
+
+        ////////////////////抽奖                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        query_lottery_info_c2s                  = 61;
+        query_lottery_info_success_s2c          = 62;
+        query_lottery_info_failed_s2c           = 63;
+
+        play_lottery_c2s                        = 64;
+        play_lottery_failed_s2c                 = 65;
+        play_lottery_success_s2c                = 66;
+        notify_user_msg_s2c                     = 67;
+        ////////////////////好友                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        query_friend_c2s                        = 68;
+        query_friend_success_s2c                = 69;
+        query_friend_failed_s2c                 = 70;
+
+        update_friend_c2s                       = 71;
+        update_friend_success_s2c               = 72;
+        update_friend_failed_s2c                = 73;
+
+        query_friend_level_rank_c2s             = 74;
+        query_friend_level_rank_success_s2c     = 75;
+        query_friend_level_rank_failed_s2c      = 76;
+
+        query_friend_top_win_rank_c2s           = 77;
+        query_friend_top_win_rank_success_s2c   = 78;
+        query_friend_top_win_rank_failed_s2c    = 79;
+
+        query_friend_blance_rank_c2s            = 80;
+        query_friend_blance_rank_success_s2c    = 81;
+        query_friend_blance_rank_failed_s2c     = 82;
+
+        query_vip_rank_c2s                      = 83;
+        query_vip_rank_success_s2c              = 84;
+        query_vip_rank_failed_s2c               = 85;
+        ////////////////////gift                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        query_gift_info_c2s                     = 86;
+        query_gift_info_success_s2c             = 87;
+        query_gift_info_failed_s2c              = 88;
+
+        send_gift_info_c2s                      = 89;
+        send_gift_info_success_s2c              = 90;
+        send_gift_info_failed_s2c               = 91;
+
+        take_gift_info_c2s                      = 92;
+        take_gift_info_success_s2c              = 93;
+        take_gift_info_failed_s2c               = 94;
+
+        share_friend_c2s                        = 98;
+        share_friend_success_s2c                = 99;
+        share_friend_failed_s2c                 = 100;
+        ////////////////////锦标赛                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        query_tournament_info_c2s               = 101;
+        query_tournament_info_success_s2c       = 102;
+        query_tournament_info_failed_s2c        = 103;
+
+        notify_tournament_info_s2c              = 104;
+        notify_tournament_prize_info_s2c        = 105;
+
+        query_tournament_prize_info_c2s         = 106;
+        query_tournament_prize_info_success_s2c = 107;
+        query_tournament_prize_info_failed_s2c  = 108;
+
+        query_tournament_top_info_c2s           = 109;
+        query_tournament_top_info_success_s2c   = 110;
+        query_tournament_top_info_failed_s2c    = 111; 
+
+        query_tournament_log_info_c2s           = 112;
+        query_tournament_log_info_success_s2c   = 113;
+        query_tournament_log_info_failed_s2c    = 114;
+        ////////////////////buff                 ///////////////////////
+        //////////////////////////////////////////////////////////////////////// 
+        query_buff_info_c2s                     = 115;
+        query_buff_info_success_s2c             = 116;
+        query_buff_info_failed_s2c              = 117;
+        ////////////////////公告                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        notify_user_win_c2s                     = 120;
+        notify_user_win_success_s2c             = 121;
+        notify_user_win_failed_s2c              = 122;
+
+        query_package_info_c2s                  = 123;
+        query_package_info_success_s2c          = 124;
+        query_package_info_failed_s2c           = 125;
+
+        check_device_info_c2s                   = 126;
+        check_device_info_success_s2c           = 127;
+        check_device_info_failed_s2c            = 128;
+
+        query_main_page_info_c2s                = 129;
+        query_main_page_info_success_s2c        = 130;
+        query_main_page_info_failed_s2c         = 131;
+
+        ////////////////////广告                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        query_ads_info_c2s                      = 132;
+        query_ads_info_success_s2c              = 133;
+        query_ads_info_failed_s2c               = 134;
+
+        collect_ads_bonus_c2s                   = 135;
+        collect_ads_bonus_success_s2c           = 136;
+        collect_ads_bonus_failed_s2c            = 137;
+        ////////////////////theme角色选取                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        select_role_info_c2s                    = 138;
+        select_role_info_success_s2c            = 139;
+        select_role_info_failed_s2c             = 140;
+
+        ////////////////////for test                 ///////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        test_spin_c2s                           = 3000;
+        test_spin_success_s2c                   = 3001;
+        test_spin_failed_s2c                    = 3002;
+   }
+}
+        
+message erlang_handler {
+    enum login_handler {
+        user_login_c2s                          = 1;
+        user_auth_c2s                           = 2;
+        platform_bind_c2s                       = 3;
+        platform_bind_use_archive_c2s           = 4;
+        query_package_info_c2s                  = 5;
+        check_device_info_c2s                   = 6;
+        query_main_page_info_c2s                = 7;
+    }
+    enum lobby_handler {
+        user_enter_lobby_c2s                    = 1;
+    }
+    enum theme_handler {
+        user_enter_theme_c2s                    = 1;
+        user_theme_spin_c2s                     = 2;
+        user_theme_unlock_c2s                   = 3;
+        test_spin_c2s                           = 4;
+        select_role_info_c2s                    = 5;
+    }
+    enum card_handler {
+        query_card_info_c2s                     = 1;
+        collect_card_group_reward_c2s           = 2;
+    }
+    enum game_handler {
+        query_game_info_c2s                     = 1;
+        play_game_c2s                           = 2;
+    }
+    enum store_handler {
+        query_store_c2s                         = 1; 
+        app_store_buy_c2s                       = 2;
+        play_store_buy_c2s                      = 3;
+        query_buff_info_c2s                     = 4;
+    }  
+    enum lottery_handler {
+        query_lottery_info_c2s                  = 1;
+        play_lottery_c2s                        = 2;
+    }
+    enum notify_handler {
+        notify_user_win_c2s                     = 1;
+        notify_user_win_success_s2c             = 2;
+        notify_user_win_failed_s2c              = 3;
+    }
+    enum friend_handler {
+        query_friend_c2s                        = 1;
+        update_friend_c2s                       = 2;
+        query_friend_level_rank_c2s             = 3;
+        query_friend_top_win_rank_c2s           = 4;
+        query_friend_blance_rank_c2s            = 5;
+    }
+    enum rank_handler {
+        query_vip_rank_c2s                      = 1;
+    }
+    enum gift_handler {
+        query_gift_info_c2s                     = 1;
+        send_gift_info_c2s                      = 2;
+        take_gift_info_c2s                      = 3
+        share_friend_c2s                        = 4;
+    }
+    enum tournament_handler {
+        query_tournament_info_c2s               = 1;
+        query_tournament_prize_info_c2s         = 2;
+        query_tournament_top_info_c2s           = 3;
+        query_tournament_log_info_c2s           = 4;
+    }
+    enum ads_handler {
+        query_ads_info_c2s                      = 1;
+        collect_ads_bonus_c2s                   = 2;
+    }
+}
+
+
+message lua_handler {
+    enum app.world.module.shop.ShopPacket {
+        query_store_c2s                         = 1;
+        query_store_success_s2c                 = 2;
+        query_store_failed_s2c                  = 3;
+
+        app_store_buy_c2s                       = 4;
+        app_store_buy_success_s2c               = 5;
+        app_store_buy_failed_s2c                = 6;
+
+        play_store_buy_c2s                      = 7;
+        play_store_buy_success_s2c              = 8;
+        play_store_buy_failed_s2c               = 9;
+
+        query_buff_info_c2s                     = 10;
+        query_buff_info_success_s2c             = 11;
+        query_buff_info_failed_s2c              = 12;
+   
+    }
+    enum app.world.module.maintain.MaintainPacket {
+        server_maintain_s2c                     = 1;
+        server_version_s2c                      = 2;
+
+    }
+    enum app.world.module.login.LoginPacket {
+        user_login_c2s                          = 1;
+        user_login_success_s2c                  = 2;
+        user_login_failed_s2c                   = 3;
+
+        user_enter_lobby_c2s                    = 4;
+        user_enter_lobby_success_s2c            = 5;
+        user_enter_lobby_failed_s2c             = 6;
+
+        platform_bind_c2s                       = 7;
+        platform_bind_success_s2c               = 8;
+        platform_bind_conflict_s2c              = 9;
+        platform_bind_failed_s2c                = 10;
+
+        platform_bind_use_archive_c2s           = 11;
+        platform_bind_use_archive_success_s2c   = 12;
+        platform_bind_use_archive_failed_s2c    = 13;
+
+        query_package_info_c2s                  = 14;
+        query_package_info_success_s2c          = 15;
+        query_package_info_failed_s2c           = 16;
+
+        check_device_info_c2s                   = 17;
+        check_device_info_success_s2c           = 18;
+        check_device_info_failed_s2c            = 19;
+        query_main_page_info_c2s                = 20;
+    }
+    enum app.world.module.main_ui.MainUIPacket {
+        user_enter_theme_success_s2c            = 1; 
+        user_enter_theme_failed_s2c             = 2; 
+        user_theme_unlock_success_s2c           = 3; 
+        user_theme_unlock_failed_s2c            = 4; 
+        
+        user_enter_theme_c2s                    = 5;
+        user_theme_unlock_c2s                   = 6;
+
+        query_lottery_info_c2s                  = 7;
+        query_lottery_info_success_s2c          = 8;
+        query_lottery_info_failed_s2c           = 9;
+
+        notify_user_msg_s2c                     = 10;
+
+        query_ads_info_c2s                      = 11;
+        query_ads_info_success_s2c              = 12;
+        query_ads_info_failed_s2c               = 13;
+
+        collect_ads_bonus_c2s                   = 14;
+        collect_ads_bonus_success_s2c           = 15;
+        collect_ads_bonus_failed_s2c            = 16;
+    }
+    enum app.world.module.game.GamePacket {
+        user_theme_spin_c2s                     = 1;
+        user_theme_spin_success_s2c             = 2;
+        user_theme_spin_failed_s2c              = 3;
+
+        query_game_info_c2s                     = 4;
+        query_game_info_success_s2c             = 5;
+        query_game_info_failed_s2c              = 6;
+
+        play_game_c2s                           = 7;
+        play_game_failed_s2c                    = 8;
+        play_game_success_s2c                   = 9;
+
+        notify_tournament_info_s2c              = 10;
+        notify_user_win_c2s                     = 11;
+        notify_user_win_success_s2c             = 12;
+        notify_user_win_failed_s2c              = 13;
+    }
+    
+    enum app.world.module.CollectCard.CardPacket {
+        query_card_info_c2s                     = 1;
+        query_card_info_success_s2c             = 2;
+        query_card_info_failed_s2c              = 3;
+
+        collect_card_group_reward_c2s           = 4;
+        collect_card_group_reward_success_s2c   = 5;
+        collect_card_group_reward_failed_s2c    = 6;
+
+    }
+
+    enum app.world.module.activity.ActivityPacket {
+        play_lottery_c2s                        = 1;
+        play_lottery_failed_s2c                 = 2;
+        play_lottery_success_s2c                = 3;
+    }
+
+    enum app.world.module.friend.FriendPacket {
+        query_friend_c2s                        = 1;
+        query_friend_success_s2c                = 2;
+        query_friend_failed_s2c                 = 3;
+
+        update_friend_c2s                       = 4;
+        update_friend_success_s2c               = 5;
+        update_friend_failed_s2c                = 6;
+
+        query_friend_level_rank_c2s             = 7;
+        query_friend_level_rank_success_s2c     = 8;
+        query_friend_level_rank_failed_s2c      = 9;
+
+        query_friend_top_win_rank_c2s           = 10;
+        query_friend_top_win_rank_success_s2c   = 11;
+        query_friend_top_win_rank_failed_s2c    = 12;
+
+        query_friend_blance_rank_c2s            = 13;
+        query_friend_blance_rank_success_s2c    = 14;
+        query_friend_blance_rank_failed_s2c     = 15;
+
+        query_vip_rank_c2s                      = 16;
+        query_vip_rank_success_s2c              = 17;
+        query_vip_rank_failed_s2c               = 18;
+
+        query_gift_info_c2s                     = 19;
+        query_gift_info_success_s2c             = 20;
+        query_gift_info_failed_s2c              = 21;
+
+        share_friend_c2s                        = 31;
+        share_friend_success_s2c                = 32;
+        share_friend_failed_s2c                 = 33;
+
+        send_gift_info_c2s                      = 34;
+        send_gift_info_success_s2c              = 35;
+        send_gift_info_failed_s2c               = 36;
+
+        take_gift_info_c2s                      = 37;
+        take_gift_info_success_s2c              = 38;
+        take_gift_info_failed_s2c               = 39;
+    }
+    enum app.world.module.tournament.RacePacket {
+        query_tournament_info_c2s               = 1;
+        query_tournament_info_success_s2c       = 2;
+        query_tournament_info_failed_s2c        = 3;
+
+        notify_tournament_prize_info_s2c        = 4;
+
+        query_tournament_prize_info_c2s         = 5;
+        query_tournament_prize_info_success_s2c = 6;
+        query_tournament_prize_info_failed_s2c  = 7;
+
+        query_tournament_log_info_c2s           = 8;
+        query_tournament_log_info_success_s2c   = 9;
+        query_tournament_log_info_failed_s2c    = 10;   
+
+        query_tournament_top_info_c2s           = 11;
+        query_tournament_top_info_success_s2c   = 12;
+        query_tournament_top_info_failed_s2c    = 13; 
+
+    }
+}
+
+message server_version_s2c {
+    required uint16 msgid           = 1;
+    required string b_version       = 2;
+    required string s_version       = 3;
+    required string data            = 4;
+}
+
+message server_maintain_s2c {
+    required uint16 msgid           = 1;
+    required uint8  status          = 2;
+    required string prompt          = 3;
+}
+
+message user_login_c2s {
+    required uint16 msgid           = 1;
+    required string deviceid        = 2;
+    required string ostype          = 3;
+    required string devicename      = 4;
+    required string osversion       = 5;
+}
+
+message user_auth_c2s {
+    required uint16 msgid           = 1;
+    required string session         = 2;
+    required string time            = 3;
+    required string sign            = 4;
+}
+
+message user_auth_success_s2c {
+    required uint16 msgid           = 1;
+}
+
+message user_auth_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+//成功
+// k --------------v
+// 5001           deviceid
+// 5002           time
+// 5003           sessionid
+// 5011           g+openid
+// 5012           fbopenid
+// 5013           amazonopenid
+message user_login_success_s2c {
+    required uint16 msgid           = 1;
+    repeated kvobject accinfo       = 2;
+    repeated platinfo platinfos     = 3;
+}
+
+message user_login_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message platform_bind_c2s {
+    required uint16 msgid           = 1;
+    required string deviceid        = 2;
+    required uint16 opentype        = 3;
+    required string name            = 4;
+    required string img             = 5;
+    required string token           = 6;
+}
+
+message platform_bind_success_s2c {
+    required uint16 msgid           = 1;
+    required int64 gold             = 2;
+}
+message platform_bind_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+// 3001             lv
+// 4001             exp
+// 4002             gold
+// 3002             logintime
+message platform_bind_conflict_s2c {
+    required uint16 msgid           = 1;
+    repeated kvobject conflictinfo  = 2;
+}
+
+message platform_bind_use_archive_c2s {
+    required uint16 msgid           = 1;
+    required string deviceid        = 2;
+    required uint16 opentype        = 3;
+    required string name            = 4;
+    required string img             = 5;
+    required string token           = 6;
+}
+
+message platform_bind_use_archive_success_s2c {
+    required uint16 msgid           = 1;
+    required int64 gold             = 2;
+}
+
+message platform_bind_use_archive_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message user_enter_lobby_c2s {
+    required uint16 msgid           = 1;
+}
+
+message user_enter_lobby_success_s2c {
+    required uint16 msgid           = 1;
+    required roleinfo roleinfo      = 2;
+}
+
+message user_enter_lobby_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message user_enter_theme_c2s {
+    required uint16 msgid           = 1;
+    required int32 themeid          = 2;
+}
+
+message user_enter_theme_success_s2c {
+    required uint16 msgid           = 1;
+    required themeinfo themeinfo    = 2;
+    required tournamentinfo tournamentinfo  = 3;
+}
+
+message user_enter_theme_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message user_theme_spin_c2s {
+    required uint16 msgid           = 1;
+    required int32 themeid          = 2;
+    required uint8 isfree           = 3;
+    required int32 bet              = 4;
+    required int64 gold             = 5;
+}
+
+message user_theme_spin_success_s2c {
+    required uint16 msgid           = 1;
+    repeated symbol symbols         = 2;
+    repeated line lines             = 3;
+    required replace replace        = 4;
+    required rewardinfo rewardinfo  = 5;
+}
+
+message user_theme_spin_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_game_info_c2s {
+    required uint16 msgid           = 1;
+    required int32 gameid           = 2;
+}
+
+message query_game_info_success_s2c {
+    required uint16 msgid           = 1;
+    required string gameinfo        = 2;
+}
+
+message query_game_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message play_game_c2s {
+    required uint16 msgid           = 1;
+    required int32 gameid           = 2;
+    required string operate         = 3;
+}
+
+message play_game_success_s2c {
+    required uint16 msgid           = 1;
+}
+
+message play_game_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_lottery_info_c2s {
+    required uint16 msgid           = 1;
+}
+
+message query_lottery_info_success_s2c {
+    required uint16 msgid           = 1;
+    required string lottery_info    = 2;
+}
+
+message query_lottery_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+// gameid 1001 daily
+//        1002 treasure
+// params {bit:1}
+message play_lottery_c2s {
+    required uint16 msgid           = 1;
+    required int32 gameid           = 2;
+    required string params          = 3;
+}
+
+message play_lottery_success_s2c {
+    required uint16 msgid           = 1;
+    required string result          = 2;
+}
+
+message play_lottery_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_store_c2s {
+    required uint16 msgid           = 1;
+}
+
+message query_store_success_s2c {
+    required uint16 msgid           = 1;
+    repeated goodsinfo goodsinfos   = 2;
+}
+
+message query_store_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message app_store_buy_c2s {
+    required uint16 msgid           = 1;
+    required int32 goodsid          = 2;
+    required string receipt         = 3;
+}
+
+message app_store_buy_success_s2c {
+    required uint16 msgid           = 1;
+    required int64 gold             = 2;
+}
+
+message app_store_buy_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message play_store_buy_c2s {
+    required uint16 msgid           = 1;
+    required int32 goodsid          = 2;
+    required string purchaseData    = 3;
+    required string signature       = 4;
+}
+
+message play_store_buy_success_s2c {
+    required uint16 msgid           = 1;
+    required int64 gold             = 2;
+}
+
+message play_store_buy_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_friend_c2s {
+    required uint16 msgid           = 1;
+    required int32 opentype         = 2;
+}
+
+message query_friend_success_s2c {
+    required uint16 msgid           = 1;
+    repeated string friendids       = 2;
+}
+
+message query_friend_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message update_friend_c2s {
+    required uint16 msgid           = 1;
+    required int32 opentype         = 2;  
+    repeated string add_friendids   = 3;
+    repeated string del_friendids   = 4;
+}
+
+message update_friend_success_s2c {
+    required uint16 msgid           = 1;
+}
+
+message update_friend_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_friend_level_rank_c2s {
+    required uint16 msgid           = 1;
+    required int32 opentype         = 2;  
+    required int32 start            = 3;
+    required int32 offset           = 4;
+}
+
+message query_friend_level_rank_success_s2c {
+    required uint16 msgid           = 1;
+    repeated friend_lv_rank friend_lv_ranks   = 2;
+}
+
+message query_friend_level_rank_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_friend_top_win_rank_c2s {
+    required uint16 msgid           = 1;
+    required int32 opentype         = 2; 
+    required int32 start            = 3;
+    required int32 offset           = 4;
+}
+
+message query_friend_top_win_rank_success_s2c {
+    required uint16 msgid           = 1;
+    repeated friend_top_win_rank friend_top_win_ranks   = 2;
+}
+
+message query_friend_top_win_rank_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_friend_blance_rank_c2s {
+    required uint16 msgid           = 1;
+    required int32 opentype         = 2;  
+    required int32 start            = 3;
+    required int32 offset           = 4;
+}
+
+message query_friend_blance_rank_success_s2c {
+    required uint16 msgid           = 1;
+    repeated friend_blance_rank friend_blance_ranks   = 2;
+}
+
+message query_friend_blance_rank_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_vip_rank_c2s {
+    required uint16 msgid           = 1;
+    required int32 opentype         = 2;
+    required int32 start            = 3;
+    required int32 offset           = 4;
+}
+
+message query_vip_rank_success_s2c {
+    required uint16 msgid           = 1;
+    repeated vip_rank vip_ranks     = 2;
+}
+
+message query_vip_rank_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_gift_info_c2s {
+    required uint16 msgid           = 1;
+}
+
+message query_gift_info_success_s2c {
+    required uint16 msgid           = 1;
+    repeated giftinfo giftinfos     = 2;
+}
+
+message query_gift_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message send_gift_info_c2s {
+    required uint16 msgid           = 1;
+    required string userid          = 2;
+}
+
+message send_gift_info_success_s2c {
+    required uint16 msgid           = 1;
+}
+
+message send_gift_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message take_gift_info_c2s {
+    required uint16 msgid           = 1;
+    required string userid          = 2;
+}
+
+message take_gift_info_success_s2c {
+    required uint16 msgid           = 1;
+    required int64 gold             = 2;
+}
+
+message take_gift_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message share_friend_c2s {
+    required uint16 msgid           = 1;
+}
+
+message share_friend_success_s2c {
+    required uint16 msgid           = 1;
+    required int64 gold             = 2;
+}
+
+message share_friend_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_tournament_info_c2s {
+    required uint16 msgid           = 1;
+}
+
+message query_tournament_info_success_s2c {
+    required uint16 msgid           = 1;
+    repeated tournament tournaments = 2;
+}
+
+message query_tournament_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_buff_info_c2s {
+    required uint16 msgid           = 1;
+}
+
+message query_buff_info_success_s2c {
+    required uint16 msgid           = 1;
+    repeated buff buffs             = 2;
+}
+
+message query_buff_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_package_info_c2s {
+    required uint16 msgid           = 1;
+    required string packet          = 2;
+}
+
+message query_package_info_success_s2c {
+    required uint16 msgid           = 1;
+    required string url             = 2;
+}
+
+message query_package_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message check_device_info_c2s {
+    required uint16 msgid           = 1;
+    required string olddeviceid     = 2;
+    required string newdeviceid     = 3;
+}
+
+message check_device_info_success_s2c {
+    required uint16 msgid           = 1;
+    required string newdeviceid     = 2;
+}
+
+message check_device_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_main_page_info_c2s {
+    required uint16 msgid           = 1;
+}
+
+message query_main_page_info_success_s2c {
+    required uint16 msgid           = 1;
+}
+
+message query_main_page_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message notify_user_win_c2s{
+    required uint16 msgid           = 1;
+    required string name            = 2;
+    required string type            = 3;
+    required uint16 gold            = 4;
+    required uint16 thm_id          = 5;
+}
+
+message notify_user_win_success_s2c{
+    required uint16 msgid           = 1;
+    required string msg             = 2;
+}
+
+message notify_user_win_failed_s2c{
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message notify_user_msg_s2c{
+    required uint16 msgid           = 1;
+    required string msg             = 2;
+}
+
+message notify_tournament_info_s2c {
+    required uint16 msgid                   = 1;
+    required tournamentinfo tournamentinfo  = 2;
+}
+
+message notify_tournament_prize_info_s2c {
+    required uint16 msgid           = 1;
+    required int32 id               = 2;
+    required int64 gold             = 3;
+    required int32 rank             = 4;
+}
+
+message query_tournament_prize_info_c2s {
+    required uint16 msgid           = 1;
+    required int32 tournamentid     = 2;
+}
+
+message query_tournament_prize_info_success_s2c {
+    required uint16 msgid           = 1;
+    required int32 min_level        = 2;
+    required int32 max_level        = 3;
+    repeated t_prizeinfo t_prizeinfos   = 4;
+}
+
+message query_tournament_prize_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_tournament_top_info_c2s {
+    required uint16 msgid           = 1;
+    required int32 tournamentid     = 2;
+}
+
+message query_tournament_top_info_success_s2c {
+    required uint16 msgid           = 1;
+    repeated t_topinfo t_topinfos   = 2;
+}
+
+message query_tournament_top_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_tournament_log_info_c2s {
+    required uint16 msgid           = 1;
+    required int32 start            = 2;
+    required int32 offset           = 3;
+}
+
+message query_tournament_log_info_success_s2c {
+    required uint16 msgid           = 1;
+    repeated t_recordinfo t_recordinfos   = 2;
+}
+
+message query_tournament_log_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_buff_info_c2s {
+    required uint16 msgid           = 1;
+}
+
+message query_buff_info_success_s2c {
+    required uint16 msgid           = 1;
+    repeated buff buffs             = 2;
+}
+
+message query_buff_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message query_ads_info_c2s {
+    required uint16 msgid           = 1;
+}
+
+message query_ads_info_success_s2c {
+    required uint16 msgid       = 1;
+    required string ads_info    = 2;
+}
+
+message query_ads_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message collect_ads_bonus_c2s {
+    required uint16 msgid           = 1;
+    required uint16 type_id         = 2;
+    required string params          = 3;
+}
+
+message collect_ads_bonus_success_s2c {
+    required uint16 msgid           = 1;
+    required string result          = 2;
+    required int64 gold             = 3;
+}
+
+message collect_ads_bonus_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message select_role_info_c2s {
+    required uint16 msgid           = 1;
+    required int32 themeid          = 2;
+    required int32 role             = 3;//1商人,2海盗
+}
+
+message select_role_info_success_s2c {
+    required uint16 msgid           = 1;
+}
+
+message select_role_info_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message test_spin_c2s {
+    required uint16 msgid           = 1;
+    required int32 themeid          = 2;
+    required uint8 isfree           = 3;
+    required int32 bet              = 4;
+    required int64 gold             = 5;
+    required string chanceid        = 6;
+}
+message test_spin_success_s2c {
+    required uint16 msgid           = 1;
+    required int64 jackpot          = 2;//奖池剩余金币
+    required int8 blance            = 3;//1波峰，0波谷
+    required string chanceid        = 4;//当前spin使用的chanceid
+    required int64 totalgold        = 5;//奖励总金币
+    required int64 linegold         = 6;//奖励连线金币
+    required int32 bonustype        = 7;//奖励bonusType
+    required int32 bonusbet         = 8;//奖励bonus
+    required int64 bonusgold        = 9;//奖励bonus金币
+    repeated line lines             = 10;//所有连线
+    required int32 eventid          = 11;//出发事件ID
+    required int32 freespin         = 12;//freespin次数
+}
+message test_spin_failed_s2c {
+    required uint16 msgid           = 1;
+    required int32 reasonid         = 2;
+}
+
+message platinfo{
+    required int32 opentype     = 1;
+    required string userid      = 2;
+    required string name        = 3;
+    required string img         = 4;
+}
+message roleinfo{
+    required int32 lv           = 1;
+    required int64 exp          = 2;
+    required int64 gold         = 3;
+    required int32 vip          = 4;
+    required int32 vipexp       = 5;
+    required int32 sharecount   = 6;
+}
+message replace{
+    repeated symbol replace1    = 1;//普通替换
+    repeated symbol replace2    = 2;//问号替换
+    repeated symbol replace3    = 3;//点化
+}
+message symbol{
+    required int8 x             = 1;
+    required int8 y             = 2;
+    required int32 symbolid     = 3;
+}
+//lineid:0 scatter, -1 bonus 大于0普通线
+message line{
+    required uint32 lineid           = 1;
+    repeated coordinate coordinates  = 2;
+}
+message coordinate{
+    required int8 x             = 1;
+    required int8 y             = 2;
+}
+message rewardinfo{
+    required int64 gold         = 1;
+    required int64 exp          = 2;
+    required int32 spin         = 3;
+    required int32 gameid       = 4;
+}
+message themeinfo{
+    required int32 gameid       = 1;
+    required int32 spin         = 2;
+    required int32 max_spin     = 3;
+    required int64 total_gold   = 4;
+    required int32 bet          = 5;
+    required int32 bonus        = 6;//累计bonus个数
+}
+//isfirstbuy:0 无首冲； 1 有首冲奖励
+message goodsinfo{
+    required int32 goodsid      = 1;
+    required int8 isfirstbuy    = 2;
+}
+message friend_lv_rank{
+    required string userid      = 1;
+    required string name        = 2;
+    required string img         = 3;
+    required int32 lv           = 4;
+    required int32 rank         = 5;
+}
+message friend_top_win_rank{
+    required string userid      = 1;
+    required string name        = 2;
+    required string img         = 3;
+    required int64 topwin       = 4;
+    required int32 themeid      = 5;
+    required int32 level        = 6;
+    required int32 rank         = 7;
+}
+message friend_blance_rank{
+    required string userid      = 1;
+    required string name        = 2;
+    required string img         = 3;
+    required int64 blance       = 4;
+    required int32 rank         = 5;
+}
+message vip_rank{
+    required string userid      = 1;
+    required string name        = 2;
+    required string img         = 3;
+    required int32 vip          = 4;
+    required int32 vipexp       = 5;
+    required int32 rank         = 6;
+}
+//send_state 0未发送，1已经发送
+//take_state 0无赠送，1赠送，2已领取
+message giftinfo{
+    required string userid      = 1;
+    required string name        = 2;
+    required string img         = 3;
+    required int32 level        = 4;
+    required int8 send_state    = 5;
+    required int8 take_state    = 6;
+    required int64 gold         = 7;
+}
+message friendinfo{
+    required string userid      = 1;
+    required string name        = 2;
+    required string img         = 3;
+}
+//state 0:未开；1开始
+message tournament{
+    required int32 id           = 1;
+    required int8  state        = 2;
+    required int32 rank         = 3;
+    required int64 gold         = 4;
+    required int32 count        = 5;
+    required int32 time         = 6;
+}
+message tournamentinfo{
+    required int32 id           = 1;
+    required int64 gold         = 2;
+    required int32 count        = 3;
+    required int32 time         = 4;
+    repeated t_rank ranks       = 5;
+}
+message t_rank{
+    required string userid      = 1;
+    required string name        = 2;
+    required string img         = 3;
+    required int32 score        = 4;
+    required int32 rank         = 5;
+}
+message t_prizeinfo{
+    required int32 id           = 1;
+    required int64 gold         = 2;
+}
+message t_topinfo{
+    required string name        = 1;
+    required string img         = 2;
+    required int32 rank         = 3;
+    required int32 score        = 4;
+    required int64 gold         = 5;
+}
+message t_recordinfo{
+    required int32 tournamentid = 1;
+    required string userid      = 2;
+    required int32 rank         = 3;
+    required int64 gold         = 4;
+    required int32 time         = 5;
+}
+//type2 gold,3 exp,4 time,5 lock
+message buff{
+    required int8 type          = 1;
+    required int32 time         = 2;
+}
